@@ -340,9 +340,11 @@ from src.interestingness import quantum_anomaly_score
 
 bunch = load_wine()
 df_wine2 = pd.DataFrame(bunch.data, columns=bunch.feature_names)
-variances = df_wine2.var().sort_values(ascending=False)
+# FIX: Standardize BEFORE variance ranking to avoid scale bias
+df_wine2_std = pd.DataFrame(StandardScaler().fit_transform(df_wine2), columns=bunch.feature_names)
+variances = df_wine2_std.var().sort_values(ascending=False)
 top4_feat = variances.head(4).index.tolist()
-print(f"sklearn wine top-4 features by variance: {top4_feat}")
+print(f"sklearn wine top-4 features by variance (post-standardization): {top4_feat}")
 
 X2 = df_wine2[top4_feat].values
 X2_std = StandardScaler().fit_transform(X2)
@@ -768,12 +770,14 @@ Q-Interestingness framework?
 - Sample size: N=150 (seed=42)
 
 ## 8. Q-Interestingness Definition
-QI(x) = 0.40 * QAS(x) + 0.20 * CAS(x) + 0.20 * N(x) + 0.20 * B(x)
+QU(x) = 0.5*QAS + 0.3*N + 0.2*B
+RD(x) = 0.5*|QAS-CAS| + 0.5*(1-J_5)
+QI_v2(x) = 0.5*QU + 0.5*RD
 Where:
 - QAS = 1 - mean quantum similarity (quantum anomaly score)
 - CAS = classical IsolationForest anomaly score
 - N = quantum novelty (1 - mean similarity to top-5 quantum neighbors)
-- B = quantum boundary/heterogeneity (variance of kernel row)
+- B = quantum neighborhood heterogeneity (QNH)/heterogeneity (variance of kernel row)
 
 ## 9. Experimental Setup
 - Quantum kernel: N=150 (seed=42, deterministic)

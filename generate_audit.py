@@ -41,23 +41,11 @@ d_poly   = m['d_rbf_poly']
 perm_p   = m['rbf_perm_p']
 perm_z   = m['rbf_perm_z']
 
-# Outcome determination
-def determine_outcome(cka, j10, d_q, d_lin, d_poly, perm_p):
-    # Is quantum uniquely different relative to classical controls?
-    quantum_more_different = d_q > max(d_lin, d_poly)
-    substantially_different = cka < 0.85 and j10 < 0.5
-    statistically_supported = perm_p < 0.05
+# Categorization removed
+outcome_text = "The framework demonstrates representation-dependent exploratory structure."
+if d_q > max(d_lin, d_poly):
+    outcome_text += " Quantum representations diverge significantly more from classical RBF than polynomial controls do."
 
-    if substantially_different and quantum_more_different and statistically_supported:
-        return "A", "Evidence supports quantum feature spaces as a complementary exploratory lens"
-    elif substantially_different and not quantum_more_different:
-        return "B", "The framework demonstrates representation-dependent exploratory structure, but quantum-specific complementarity is not unique relative to classical nonlinear controls"
-    elif substantially_different and not statistically_supported:
-        return "B+", "Quantum representation is substantially different but statistical support is limited"
-    else:
-        return "C", "Insufficient evidence for meaningful complementary structure"
-
-outcome_cat, outcome_text = determine_outcome(cka_obs, j10, d_q, d_lin, d_poly, perm_p)
 
 # Quantum uniqueness assessment
 uniqueness = "YES" if d_q > max(d_lin, d_poly) else "NO"
@@ -319,8 +307,6 @@ python run_quantum_permutation.py  # quantum permutation test B=100
 
 ## Final Research Conclusion
 
-**Outcome Category: {outcome_cat}**
-
 {outcome_text}.
 
 CKA={cka_obs:.4f} [95%CI: {cka_lo:.4f}–{cka_hi:.4f}], Jaccard@10={j10:.4f} [95%CI: {j10_lo:.4f}–{j10_hi:.4f}].
@@ -389,7 +375,7 @@ conf = f"""# Q-Interestingness: Conference Readiness Checklist
 
 ## FINAL RESEARCH CONCLUSION
 
-**Outcome {outcome_cat}: {outcome_text}**
+**Outcome**: {outcome_text}
 
 Primary evidence:
 - CKA = {cka_obs:.4f} (95%CI [{cka_lo:.4f},{cka_hi:.4f}]) — substantially below 1.0

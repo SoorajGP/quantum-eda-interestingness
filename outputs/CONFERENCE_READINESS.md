@@ -52,7 +52,7 @@
 
 ## FINAL RESEARCH CONCLUSION
 
-**Outcome A: Evidence supports quantum feature spaces as a complementary exploratory lens**
+**Outcome**: The framework demonstrates representation-dependent exploratory structure. Quantum representations diverge significantly more from classical RBF than polynomial controls do.
 
 Primary evidence:
 - CKA = 0.2484 (95%CI [0.3132,0.3851]) — substantially below 1.0

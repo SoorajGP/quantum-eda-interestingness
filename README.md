@@ -6,16 +6,16 @@
 
 ## Research Summary
 
-| Metric | Value |
-|--------|-------|
-| Classical–Quantum Kernel Alignment (CKA) | **0.2484** |
-| Neighborhood Jaccard Overlap (k=10) | **0.1004** |
-| Top-10 Anomaly Overlap | **0.20** |
-| Quantum-specific Exploratory Candidates | **13 / 150** |
-| Q-Interestingness Rank Stability (Spearman) | **0.7977** |
-| Permutation Control z-score | **9.14** |
+| Metric | Value | Status |
+|--------|-------|--------|
+| Classical–Quantum Kernel Alignment (CKA) | **0.2484** | [EXISTING] |
+| Neighborhood Jaccard Overlap (k=10) | **0.1004** | [EXISTING] |
+| Top-10 Anomaly Overlap | **0.20** | [EXISTING] |
+| Quantum-specific Exploratory Candidates | **13 / 150** | [EXISTING] |
+| Classical Control Divergence vs RBF ($D = 1 - \text{CKA}$) | Quantum: **0.7516** vs Poly3: **0.3298** | [NEW] |
+| QI_v2 Rank Stability (Spearman) | **0.9697** | [NEW] |
 
-**Conclusion**: Category A — Strong evidence of complementary quantum exploratory structure.
+**Core Finding**: The quantum feature space via `ZZFeatureMap` produces a substantially different similarity structure from classical RBF kernels ($D = 0.7516$), diverging significantly more than classical non-linear controls.
 
 ---
 
@@ -28,7 +28,7 @@ q-interestingness/
     classical.py         — PCA, UMAP, IsolationForest, LOF, RBF kernel
     quantum.py           — ZZFeatureMap, FidelityQuantumKernel (Qiskit 2.5.2)
     metrics.py           — CKA, Jaccard neighborhoods, anomaly overlap
-    interestingness.py   — QAS, novelty, boundary, Q-Interestingness composite
+    interestingness.py   — QAS, novelty, QNH, QU, RD, QI_v2 composite
   notebooks/
     01_classical_eda.ipynb
     02_quantum_representation.ipynb
@@ -37,10 +37,12 @@ q-interestingness/
     05_q_interestingness.ipynb
     06_validation.ipynb
   outputs/
-    figures/             — all PNG plots (11 figures)
+    figures/             — publication and exploratory plots
     tables/              — all CSV result tables
-    kernels/             — K_quantum.npy, K_classical.npy
+    kernels/             — K_quantum.npy, K_classical.npy, K_quantum2.npy
     RESEARCH_REPORT.md
+    FINAL_RESEARCH_AUDIT.md
+    CONFERENCE_READINESS.md
   dashboard/
     app.py               — Streamlit interactive dashboard
   requirements.txt
@@ -48,136 +50,67 @@ q-interestingness/
 
 ---
 
-## Installation
+## Core Mathematical Framework
 
-```powershell
-# Install dependencies (Python 3.10–3.13 required)
-pip install -r requirements.txt
-```
+### Quantum State Mapping
+$$x \to |\psi(x)\rangle = U_{\Phi(x)}|0\rangle^{\otimes n}$$
 
-**Verified environment:**
-- Python 3.13.14
-- Qiskit 2.5.2
-- qiskit-machine-learning 0.9.1
-- scikit-learn 1.9.1
-- numpy 2.5.3
+Using `ZZFeatureMap` with 2 repetitions and linear entanglement:
+$$U_{\Phi(x)} = \exp\left(i \sum_j x_j Z_j + \sum_{j < k} (\pi - x_j)(\pi - x_k) Z_j Z_k\right)$$
 
----
-
-## Execution Order
-
-Run notebooks in order:
-
-```powershell
-# From the project root directory:
-python run_notebooks.py
-```
-
-Or individually:
-
-```powershell
-python -m nbconvert --to notebook --execute notebooks/01_classical_eda.ipynb --output notebooks/01_classical_eda.ipynb
-python -m nbconvert --to notebook --execute notebooks/02_quantum_representation.ipynb ...
-# etc.
-```
-
----
-
-## Datasets
-
-| Dataset | Source | Observations | Features | Quantum Features |
-|---------|--------|-------------|---------|-----------------|
-| UCI Red Wine Quality | [UCI ML Repository](https://archive.ics.uci.edu/ml/machine-learning-databases/wine-quality/winequality-red.csv) | 1,599 | 11 | alcohol, volatile acidity, sulphates, citric acid |
-| sklearn Wine | `sklearn.datasets.load_wine()` | 178 | 13 | top-4 by variance |
-
----
-
-## Methodology
-
-### Quantum Feature Encoding
-
-Data is mapped to quantum states via ZZFeatureMap:
-
-$$x \rightarrow |\psi(x)\rangle$$
-
-Quantum similarity (fidelity):
-
+### Quantum Kernel Similarity
 $$S(x_i, x_j) = |\langle\psi(x_i)|\psi(x_j)\rangle|^2$$
 
-### Q-Interestingness Composite Score
+### Q-Interestingness Framework (QI_v2)
 
-$$QI(x) = w_q \cdot QAS(x) + w_c \cdot CAS(x) + w_n \cdot N(x) + w_b \cdot B(x)$$
+The framework decomposes exploratory score assignment into internal quantum geometry and cross-representation disagreement:
 
-Default weights: wq=0.40, wc=0.20, wn=0.20, wb=0.20
+#### 1. Quantum Unusualness (QU)
+Measures structural isolation and novelty strictly within the quantum feature space:
+$$\text{QU}(x) = 0.5 \cdot \text{QAS}(x) + 0.3 \cdot N(x) + 0.2 \cdot B(x)$$
 
-| Component | Description |
-|-----------|-------------|
-| QAS | Quantum Anomaly Score = 1 − mean quantum similarity |
-| CAS | Classical Anomaly Score (IsolationForest) |
-| N(x) | Quantum Novelty = 1 − mean similarity to top-k neighbors |
-| B(x) | Quantum Boundary = variance of kernel row (prototype metric) |
+* **QAS**: Global Quantum Anomaly Score = $1 - \frac{1}{N-1}\sum_{j \neq i} K_{ij}$
+* **N(x)**: Local Quantum Novelty = $1 - \text{mean}(K_{i, \text{top-}k})$
+* **B(x)**: Quantum Neighborhood Heterogeneity (QNH) = $\text{nanvar}_{j \neq i}(K_{ij})$ (excluding self-similarity $K_{ii}=1$)
 
-### Centered Kernel Alignment (CKA)
+#### 2. Representation Disagreement (RD)
+Measures divergence between classical and quantum representations:
+$$\text{RD}(x) = 0.5 \cdot |\text{QAS}(x) - \text{CAS}(x)| + 0.5 \cdot (1 - J_5(x))$$
 
-$$A(K_1, K_2) = \frac{\langle K_{1c}, K_{2c} \rangle_F}{\|K_{1c}\|_F \|K_{2c}\|_F}$$
+* **CAS**: Classical Anomaly Score (Isolation Forest)
+* **$J_5(x)$**: Neighborhood Jaccard overlap ($k=5$) between classical Euclidean and quantum kernel nearest neighbors
 
-where $H = I - \mathbf{1}\mathbf{1}^T/n$, $K_c = HKH$
-
----
-
-## Key Output Files
-
-| File | Description |
-|------|-------------|
-| `outputs/tables/FINAL_RESEARCH_RESULTS.csv` | Primary research metrics |
-| `outputs/tables/FINAL_EXPERIMENT_LOG.csv` | All experiment configurations |
-| `outputs/tables/top_q_interesting_observations.csv` | Top-20 Q-interesting observations |
-| `outputs/tables/permutation_control.csv` | Null control results (z=9.14) |
-| `outputs/tables/depth_robustness.csv` | reps=1,2,3 comparison |
-| `outputs/tables/feature_map_comparison.csv` | ZZFeatureMap vs ZFeatureMap |
-| `outputs/tables/scalability.csv` | N=50,100,150,200 runtimes |
-| `outputs/tables/cross_dataset_results.csv` | sklearn Wine validation |
-| `outputs/kernels/K_quantum.npy` | 150×150 quantum kernel matrix |
-| `outputs/kernels/K_classical.npy` | 150×150 classical RBF kernel |
-| `outputs/RESEARCH_REPORT.md` | Full auto-generated research report |
-
----
-
-## Launch Dashboard
-
-```powershell
-# From the project root:
-streamlit run dashboard/app.py
-```
-
----
-
-## Reproducibility
-
-- All random seeds: **42** (sampling, IsolationForest, UMAP)
-- Permutation control seeds: **0–9**
-- Quantum kernel: deterministic (StatevectorSampler, no shot noise)
-- Sample indices saved to: `outputs/tables/sample_indices.npy`
+#### 3. Composite Metric (QI_v2)
+$$\text{QI\_v2}(x) = 0.5 \cdot \text{QU}(x) + 0.5 \cdot \text{RD}(x)$$
 
 ---
 
 ## Limitations
 
-1. Quantum computations use classical statevector simulation — **no quantum hardware**
-2. Quantum kernel limited to N=150 due to O(N²) computation cost
-3. Q-Interestingness weights are heuristically chosen
-4. No quantum advantage claimed
+1. Quantum computations use classical statevector simulation — **no quantum hardware** was used.
+2. Quantum kernel limited to deterministic subsamples ($N=150$) due to $O(N^2)$ simulation cost.
+3. No claim of quantum computational advantage or superiority over classical anomaly detection is made.
+4. Synthetic validation confirms sensitivity to structure but demonstrates classical methods remain superior for trivial spatial outliers.
 
 ---
 
-## Important Scientific Note
+## Important Scientific Positioning
 
-> Quantum-specific high-scoring observations are called **"Quantum-specific exploratory candidates"** — not proven anomalies. The framework is exploratory, not a validated anomaly detector.
+> Quantum-specific high-scoring observations are designated as **"Quantum-specific exploratory candidates"** rather than proven anomalies. The framework is designed for exploratory data discovery and complementary hypothesis generation.
 
 ---
 
-## Citation
+## Quick Start
 
-If you use this framework for academic work, please cite the dataset sources:
-- P. Cortez et al. "Modeling wine preferences by data mining from physicochemical properties." DSS, 2009.
-- R.A. Fisher. "The use of multiple measurements in taxonomic problems." Annals of Eugenics, 1936.
+```bash
+# Install dependencies
+pip install -r requirements.txt
+
+# Run research upgrade pipeline and audit
+python upgrade.py
+python generate_audit.py
+python generate_final_outputs.py
+
+# Launch interactive dashboard
+streamlit run dashboard/app.py
+```

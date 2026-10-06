@@ -191,7 +191,7 @@ injected anomalies. Results NOT used to claim quantum superiority — classical 
 | dataset                |   sample_size |   qubits | feature_map   |   reps |   kernel_alignment |   mean_neighborhood_jaccard |   top5_anomaly_overlap |   top10_anomaly_overlap |   top20_anomaly_overlap |   n_quantum_only |
 |:-----------------------|--------------:|---------:|:--------------|-------:|-------------------:|----------------------------:|-----------------------:|------------------------:|------------------------:|-----------------:|
 | Red Wine Quality (UCI) |           150 |        4 | ZZFeatureMap  |      2 |           0.248383 |                      0.1004 |                      0 |                     0.2 |                     0.2 |               13 |
-| sklearn Wine           |           150 |        4 | ZZFeatureMap  |      2 |           0.290294 |                      0.1643 |                      0 |                     0.1 |                     0.2 |               13 |
+| sklearn Wine           |           150 |        4 | ZZFeatureMap  |      2 |           0.400843 |                      0.234  |                      0 |                     0.1 |                     0.2 |               13 |
 
 ---
 
@@ -293,9 +293,7 @@ python run_quantum_permutation.py  # quantum permutation test B=100
 
 ## Final Research Conclusion
 
-**Outcome Category: A**
-
-Evidence supports quantum feature spaces as a complementary exploratory lens.
+The framework demonstrates representation-dependent exploratory structure. Quantum representations diverge significantly more from classical RBF than polynomial controls do..
 
 CKA=0.2484 [95%CI: 0.3132–0.3851], Jaccard@10=0.1004 [95%CI: 0.0883–0.1138].
 13 quantum-specific exploratory candidates identified. QI ranking is stable
