@@ -1,0 +1,5 @@
+kernel,off_diag_mean,off_diag_std,off_diag_min,off_diag_max,cv
+ZZFeatureMap,0.075,0.0848,-0.0015,0.991,1.1299
+RBF,0.2762,0.254,0.0,1.0,0.9196
+Linear,-0.0268,2.2611,-8.8132,13.5929,
+Polynomial3,1.9703,3.5396,-1.7423,85.0808,1.7965

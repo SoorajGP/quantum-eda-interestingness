@@ -1,0 +1,2 @@
+dataset,sample_size,qubits,feature_map,reps,kernel_alignment,mean_neighborhood_jaccard,top5_anomaly_overlap,top10_anomaly_overlap,top20_anomaly_overlap,number_quantum_only_candidates,qi_rank_stability_spearman,permutation_z_score
+Red Wine Quality (UCI),150,4,ZZFeatureMap,2,0.248383,0.100387,0.0,0.2,0.2,13,0.7977,9.1407

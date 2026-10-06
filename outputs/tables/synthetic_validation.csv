@@ -1,0 +1,3 @@
+dataset,n_obs,n_anomalies,cka,runtime_s,CAS_P@5,CAS_P@10,CAS_P@20,QAS_P@5,QAS_P@10,QAS_P@20,QU_P@5,QU_P@10,QU_P@20,RD_P@5,RD_P@10,RD_P@20,QI_P@5,QI_P@10,QI_P@20
+Gaussian+InjectedAnomalies,130,10,0.8443,45.6,1.0,1.0,0.5,1.0,0.9,0.5,1.0,0.9,0.5,0.0,0.2,0.2,0.8,0.9,0.5
+TwoMoons+InjectedAnomalies,130,10,0.4556,45.1,1.0,0.7,0.45,0.2,0.1,0.1,0.6,0.5,0.25,1.0,0.7,0.4,0.8,0.6,0.45

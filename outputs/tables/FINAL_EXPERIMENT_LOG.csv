@@ -1,0 +1,12 @@
+experiment,dataset,feature_map,reps,sample_size,metric,value
+feature_map_robustness,Red Wine Quality,ZZFeatureMap,2,150,cka,0.2494
+feature_map_robustness,Red Wine Quality,ZFeatureMap,2,150,cka,0.6407
+depth_robustness,Red Wine Quality,ZZFeatureMap,1,150,cka,0.2853
+depth_robustness,Red Wine Quality,ZZFeatureMap,2,150,cka,0.2493
+depth_robustness,Red Wine Quality,ZZFeatureMap,3,150,cka,0.221
+scalability,Red Wine Quality,ZZFeatureMap,2,50,runtime_s,5.55
+scalability,Red Wine Quality,ZZFeatureMap,2,100,runtime_s,22.37
+scalability,Red Wine Quality,ZZFeatureMap,2,150,runtime_s,43.07
+scalability,Red Wine Quality,ZZFeatureMap,2,200,runtime_s,79.19
+cross_dataset,Red Wine Quality (UCI),ZZFeatureMap,2,150,cka,0.248383
+cross_dataset,sklearn Wine,ZZFeatureMap,2,150,cka,0.290294

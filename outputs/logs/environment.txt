@@ -1,0 +1,11 @@
+Python: 3.13.14 (tags/v3.13.14:fd17997, Jun 10 2026, 13:03:48) [MSC v.1944 64 bit (AMD64)]
+Qiskit: 2.5.2
+Qiskit Machine Learning: 0.9.1
+scikit-learn: 1.9.1
+numpy: 2.5.3
+pandas: 3.0.6
+scipy: 1.18.1
+matplotlib: 3.11.2
+seaborn: 0.13.2
+umap-learn: 0.5.12
+streamlit: 1.65.0

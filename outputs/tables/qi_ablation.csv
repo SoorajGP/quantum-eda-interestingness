@@ -1,0 +1,9 @@
+ablation,spearman_vs_full_QI,top5_jaccard,top10_jaccard,top20_jaccard
+A_QAS_only,0.8706,0.6,0.6,0.8
+B_QAS+N,0.8682,0.6,0.5,0.7
+C_QAS+B,0.5152,0.2,0.4,0.5
+D_QAS+CAS,0.6021,0.0,0.1,0.1
+E_QAS+N+B,0.8591,0.4,0.6,0.65
+F_QU,0.8761,0.4,0.6,0.75
+G_RD,0.8852,0.8,0.8,0.85
+H_QI_v2,1.0,1.0,1.0,1.0

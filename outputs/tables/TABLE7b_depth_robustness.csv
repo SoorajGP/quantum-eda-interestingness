@@ -1,0 +1,4 @@
+reps,circuit_depth,runtime_s,kernel_mean,kernel_std,cka,top10_anomaly_overlap,status
+1,11,48.57,0.0724,0.1187,0.2853,0.2,EXISTING
+2,19,51.87,0.0813,0.1133,0.2493,0.2,EXISTING
+3,27,58.51,0.0961,0.1182,0.221,0.1,EXISTING

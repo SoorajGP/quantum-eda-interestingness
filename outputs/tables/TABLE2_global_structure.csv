@@ -1,0 +1,7 @@
+metric,value,ci95,status
+"CKA(Quantum, RBF)",0.2484,"[0.3132,0.3851]",EXISTING
+"CKA(RBF, Linear)",0.7555,n/a,NEW
+"CKA(RBF, Poly3)",0.6702,n/a,NEW
+"D(RBF,Quantum)=1-CKA",0.7516,n/a,DERIVED
+"D(RBF,Linear)",0.2445,n/a,DERIVED
+"D(RBF,Poly3)",0.3298,n/a,DERIVED

@@ -1,0 +1,4 @@
+test,B,null_mean,null_std,observed_cka,z_score,empirical_p,status
+existing_quantum_perm_10,10,0.1837,0.0067,0.2484,9.6351,not computed (B=10 insufficient),EXISTING
+rbf_perm_null_100,100,0.2099,0.0073,0.2484,5.2862,0.0099,NEW (RBF permutation proxy)
+full_quantum_perm_100,100,PENDING,PENDING,0.2484,PENDING,PENDING,PENDING
