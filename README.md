@@ -8,6 +8,8 @@
 
 > **Central Research Question**: *Does mapping classical tabular data into a quantum Hilbert space alter what exploratory analysis identifies as structurally unusual, and can this divergence be systematically quantified to surface complementary exploratory candidates?*
 
+> 📋 **Research Progress & Methodology History**: For the complete chronological record of all design decisions, bug fixes, implementation milestones, and empirical calculations from project inception to completion, consult [RESEARCH_LOG.md](RESEARCH_LOG.md).
+
 ---
 
 ## Abstract
@@ -213,6 +215,8 @@ To isolate the mechanism producing representation divergence, we ablated the qua
 
 ```
 q-interestingness/
+├── README.md                # Primary research & publication documentation
+├── RESEARCH_LOG.md          # Comprehensive chronological research & decision log
 ├── src/
 │   ├── data.py              # Dataset acquisition, standardization, sampling
 │   ├── classical.py         # PCA, UMAP, Isolation Forest, LOF, RBF kernels
@@ -220,7 +224,6 @@ q-interestingness/
 │   ├── metrics.py           # CKA, Jaccard neighborhoods, anomaly overlaps
 │   └── interestingness.py   # QAS, Novelty, Heterogeneity, QU, RD, and QI_v2
 ├── notebooks/
-│   ├── README.md                       # Comprehensive guide to the 6 notebooks
 │   ├── 01_classical_eda.ipynb          # Classical baseline distributions and embeddings
 │   ├── 02_quantum_representation.ipynb # Feature encoding and circuit inspection
 │   ├── 03_quantum_similarity.ipynb     # Kernel matrix evaluation and statevector checks
