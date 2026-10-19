@@ -112,7 +112,7 @@ but absolute values differ. All final results use B_corrected.
 |------|---|-----------|---------|----------|-----------|----------------|
 | Quantum perm (existing) | 10 | 0.1837 | 0.0071 | 0.2484 | z=9.14 | INSUFFICIENT B — not a formal p-value |
 | RBF perm proxy | 100 | 0.2099 | 0.0073 | 0.2484 | z=5.29, p=0.0099 | Proxy null; different from quantum perm |
-| Full quantum perm | 100 | PENDING | PENDING | 0.2484 | PENDING | ~72 min; see run_quantum_permutation.py |
+| Full quantum perm | 100 | 0.1821 | 0.0074 | 0.2484 | z=8.9087, p=0.0099 | COMPLETED — statistically significant (p < 0.01) |
 
 **Bootstrap CIs (B=1000):**
 | Metric | Observed | 95% CI |
@@ -176,10 +176,11 @@ QI(x) = 0.5*QU + 0.5*RD  [default lambda=0.5]
 
 ## 11. Synthetic Validation
 
-| dataset                    |   n_obs |   n_anomalies |    cka |   runtime_s |   CAS_P@5 |   CAS_P@10 |   CAS_P@20 |   QAS_P@5 |   QAS_P@10 |   QAS_P@20 |   QU_P@5 |   QU_P@10 |   QU_P@20 |   RD_P@5 |   RD_P@10 |   RD_P@20 |   QI_P@5 |   QI_P@10 |   QI_P@20 |
-|:---------------------------|--------:|--------------:|-------:|------------:|----------:|-----------:|-----------:|----------:|-----------:|-----------:|---------:|----------:|----------:|---------:|----------:|----------:|---------:|----------:|----------:|
-| Gaussian+InjectedAnomalies |     130 |            10 | 0.8443 |        45.6 |         1 |        1   |       0.5  |       1   |        0.9 |        0.5 |      1   |       0.9 |      0.5  |        0 |       0.2 |       0.2 |      0.8 |       0.9 |      0.5  |
-| TwoMoons+InjectedAnomalies |     130 |            10 | 0.4556 |        45.1 |         1 |        0.7 |       0.45 |       0.2 |        0.1 |        0.1 |      0.6 |       0.5 |      0.25 |        1 |       0.7 |       0.4 |      0.8 |       0.6 |      0.45 |
+| dataset                             |   n_obs |   n_anomalies |    cka |   runtime_s |   CAS_P@5 |   CAS_P@10 |   CAS_P@20 |   QAS_P@5 |   QAS_P@10 |   QAS_P@20 |   QU_P@5 |   QU_P@10 |   QU_P@20 |   RD_P@5 |   RD_P@10 |   RD_P@20 |   QI_P@5 |   QI_P@10 |   QI_P@20 |
+|:------------------------------------|--------:|--------------:|-------:|------------:|----------:|-----------:|-----------:|----------:|-----------:|-----------:|---------:|----------:|----------:|---------:|----------:|----------:|---------:|----------:|----------:|
+| Gaussian+InjectedAnomalies          |     130 |            10 | 0.8443 |        45.6 |         1 |        1   |       0.5  |       1   |        0.9 |       0.5  |      1   |       0.9 |      0.5  |        0 |       0.2 |       0.2 |      0.8 |       0.9 |      0.5  |
+| TwoMoons+InjectedAnomalies          |     130 |            10 | 0.4556 |        45.1 |         1 |        0.7 |       0.45 |       0.2 |        0.1 |       0.1  |      0.6 |       0.5 |      0.25 |        1 |       0.7 |       0.4 |      0.8 |       0.6 |      0.45 |
+| ConcentricCircles+InjectedAnomalies |     130 |            10 | 0.3958 |        25   |         1 |        0.8 |       0.4  |       0.2 |        0.2 |       0.15 |      0.4 |       0.2 |      0.25 |        1 |       0.6 |       0.4 |      0.8 |       0.7 |      0.4  |
 
 **Interpretation**: Precision@10 values indicate whether QI, QU, RD successfully identify
 injected anomalies. Results NOT used to claim quantum superiority — classical CAS is the baseline.
@@ -188,10 +189,11 @@ injected anomalies. Results NOT used to claim quantum superiority — classical 
 
 ## 12. Cross-Dataset Validation
 
-| dataset                |   sample_size |   qubits | feature_map   |   reps |   kernel_alignment |   mean_neighborhood_jaccard |   top5_anomaly_overlap |   top10_anomaly_overlap |   top20_anomaly_overlap |   n_quantum_only |
-|:-----------------------|--------------:|---------:|:--------------|-------:|-------------------:|----------------------------:|-----------------------:|------------------------:|------------------------:|-----------------:|
-| Red Wine Quality (UCI) |           150 |        4 | ZZFeatureMap  |      2 |           0.248383 |                      0.1004 |                      0 |                     0.2 |                     0.2 |               13 |
-| sklearn Wine           |           150 |        4 | ZZFeatureMap  |      2 |           0.400843 |                      0.234  |                      0 |                     0.1 |                     0.2 |               13 |
+| dataset                 |   sample_size |   qubits | feature_map   |   reps |   kernel_alignment |   mean_neighborhood_jaccard |   top5_anomaly_overlap |   top10_anomaly_overlap |   top20_anomaly_overlap |   n_quantum_only |
+|:------------------------|--------------:|---------:|:--------------|-------:|-------------------:|----------------------------:|-----------------------:|------------------------:|------------------------:|-----------------:|
+| Red Wine Quality (UCI)  |           150 |        4 | ZZFeatureMap  |      2 |           0.248383 |                      0.1004 |                      0 |                     0.2 |                     0.2 |               13 |
+| sklearn Wine            |           150 |        4 | ZZFeatureMap  |      2 |           0.400843 |                      0.234  |                      0 |                     0.1 |                     0.2 |               13 |
+| Breast Cancer Wisconsin |           150 |        4 | ZZFeatureMap  |      2 |           0.298312 |                      0.1526 |                      0 |                     0.2 |                     0.2 |               13 |
 
 ---
 
@@ -238,7 +240,7 @@ Empirical scaling exponent ≈ 2.0 (consistent with O(N²) kernel evaluation).
 
 1. All quantum computations: classical statevector simulation (no quantum hardware)
 2. Quantum kernel: N=150 due to O(N²) cost (~43s per run)
-3. Full quantum permutation test (B=100) is PENDING (~72 min)
+3. Full quantum permutation test (B=100) COMPLETED (z=8.9087, p=0.0099)
 4. ZZFeatureMap linear entanglement only; other circuit designs untested
 5. Q-Interestingness weights heuristically chosen (sensitivity analyzed but not validated)
 6. B metric (neighborhood heterogeneity) is an exploratory composite; not theoretically proven
@@ -256,12 +258,13 @@ Empirical scaling exponent ≈ 2.0 (consistent with O(N²) kernel evaluation).
 5. **Feature map matters**: ZFeatureMap CKA=0.6407 vs ZZFeatureMap CKA=0.2484
 6. **Deeper circuits diverge more**: reps=1 CKA=0.285 → reps=3 CKA=0.221
 7. **Cross-dataset consistency**: sklearn Wine shows similar pattern (CKA=0.290)
+8. **Formal statistical significance**: Full quantum permutation test (B=100, z=8.9087, p=0.0099) confirms observed CKA (0.2484) is non-random (p < 0.01) vs null mean (0.1821 ± 0.0074).
 
 ---
 
 ## 18. Unsupported / Pending Claims
 
-1. Formal statistical significance of CKA difference: full quantum permutation test PENDING
+1. Formal statistical significance of CKA difference: COMPLETED (B=100 full quantum permutations)
 2. Quantum-specific superiority over classical nonlinear alternatives: D(RBF,quantum)=0.7516 vs D(RBF,poly)=0.3298 — quantum MORE divergent
 3. Q-Interestingness practical utility: synthetic Precision@k values needed for stronger claim
 
@@ -271,9 +274,8 @@ Empirical scaling exponent ≈ 2.0 (consistent with O(N²) kernel evaluation).
 
 | Experiment | Command | Est. Runtime |
 |-----------|---------|-------------|
-| Full quantum perm B=100 | `python run_quantum_permutation.py` | ~72 min |
-| Third real dataset | Manual addition | ~30 min |
-| Concentric circles synthetic | Add to upgrade.py | ~5 min |
+| Third real dataset | `python run_third_dataset.py` | ~1 min |
+| Concentric circles synthetic | `python run_concentric_circles.py` | ~1 min |
 
 ---
 
@@ -282,11 +284,9 @@ Empirical scaling exponent ≈ 2.0 (consistent with O(N²) kernel evaluation).
 ```powershell
 # From project root:
 python upgrade.py          # all Phase C/D/F upgrades
+python run_quantum_permutation.py  # quantum permutation test B=100
 python generate_audit.py   # this report
 streamlit run dashboard/app.py  # dashboard
-
-# Pending:
-python run_quantum_permutation.py  # quantum permutation test B=100
 ```
 
 ---

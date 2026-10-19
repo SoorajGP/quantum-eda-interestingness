@@ -32,9 +32,9 @@
 
 ## OPTIONAL / PENDING
 
-- [ ] Full quantum permutation test B=100 (~72 min) → `python run_quantum_permutation.py`
-- [ ] Third real-world dataset (future work)
-- [ ] Concentric circles synthetic dataset
+- [x] **Full quantum permutation test (B=100)** — COMPLETED: null mean=0.1821, null std=0.0074, z=8.9087, p=0.0099 (p < 0.01)
+- [ ] Third real-world dataset (future work) → `python run_third_dataset.py`
+- [ ] Concentric circles synthetic dataset → `python run_concentric_circles.py`
 - [ ] Framework architecture figure (FIGURE 1) — suggested for camera-ready
 
 ---
@@ -43,7 +43,7 @@
 
 1. All quantum computations are classical statevector simulations (no quantum hardware)
 2. Quantum kernel limited to N=150 (O(N²) cost); full 1599-sample kernel not computed
-3. Full quantum permutation test (B=100) is PENDING
+3. Full quantum permutation test (B=100) COMPLETED (z=8.9087, p=0.0099)
 4. QI weights heuristically chosen (sensitivity analyzed but no ground-truth validation)
 5. B metric is exploratory; not theoretically grounded
 6. No claim of quantum computational advantage
